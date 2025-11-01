@@ -6,12 +6,14 @@ public class modelo {
     private List<Equipos> catalogo;
     private int ultimoID;
     
+    // Constructor del modelo - inicializa el catalogo y carga datos
     public modelo() {
         this.catalogo = new ArrayList<>();
         this.ultimoID = 10;
         inicializarCatalogo();
     }
     
+    // Carga inicial del catalogo con equipos de ejemplo
     private void inicializarCatalogo() {
         // Drones
         catalogo.add(new drones(1, "Dron Riego A1", 150, "Riego automático"));
@@ -33,11 +35,12 @@ public class modelo {
         catalogo.add(new sensores(10, "Sensor Luz Z4", 15, "Intensidad lumínica"));
     }
     
+    // Devuelve todos los equipos del catalogo
     public List<Equipos> getTodosEquipos() {
         return new ArrayList<>(catalogo);
     }
     
-    // OVERLOADING: Búsqueda por ID y por nombre
+    // OVERLOADING: Busqueda de equipo por ID
     public Equipos buscarEquipo(int id) {
         for (Equipos equipo : catalogo) {
             if (equipo.getID() == id) {
@@ -47,6 +50,7 @@ public class modelo {
         return null;
     }
     
+    // OVERLOADING: Busqueda de equipos por nombre
     public List<Equipos> buscarEquipo(String nombre) {
         List<Equipos> resultados = new ArrayList<>();
         for (Equipos equipo : catalogo) {
@@ -57,12 +61,14 @@ public class modelo {
         return resultados;
     }
     
+    // Ordena los equipos por consumo electrico ascendente
     public List<Equipos> ordenarPorConsumo() {
         List<Equipos> ordenado = new ArrayList<>(catalogo);
         ordenado.sort(Comparator.comparingInt(Equipos::getConsumo));
         return ordenado;
     }
     
+    // Obtiene las capacidades especificas de un equipo
     public List<String> obtenerCapacidades(Equipos equipo) {
         List<String> capacidades = new ArrayList<>();
         
@@ -80,14 +86,18 @@ public class modelo {
         
         return capacidades;
     }
+    
+    // Agrega un nuevo equipo al catalogo
     public void agregarEquipo(Equipos nuevoEquipo) {
         catalogo.add(nuevoEquipo);
     }
     
+    // Genera un nuevo ID unico para equipos
     public int generarNuevoID() {
         return ++ultimoID;
     }
     
+    // Verifica si un ID ya existe en el catalogo
     public boolean existeID(int id) {
         for (Equipos equipo : catalogo) {
             if (equipo.getID() == id) {
