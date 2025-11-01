@@ -5,12 +5,14 @@ public class controlador {
     private vista vista;
     private boolean ejecutando;
     
+    // Constructor del controlador con inyeccion de dependencias
     public controlador(modelo modelo, vista vista) {
         this.modelo = modelo;
         this.vista = vista;
         this.ejecutando = true;
     }
     
+    // Metodo principal que inicia el bucle de ejecucion del sistema
     public void iniciar() {
         while (ejecutando) {
             vista.mostrarMenu();
@@ -19,6 +21,7 @@ public class controlador {
         }
     }
     
+    // Procesa la opcion seleccionada por el usuario
     private void procesarOpcion(int opcion) {
         switch (opcion) {
             case 1:
@@ -44,11 +47,13 @@ public class controlador {
         }
     }
     
+    // Lista todos los equipos del catalogo
     private void listarTodosEquipos() {
         List<Equipos> equipos = modelo.getTodosEquipos();
         vista.mostrarListaEquipos(equipos);
     }
     
+    // Busca un equipo por su ID unico
     private void buscarPorID() {
         int id = vista.leerID();
         Equipos equipo = modelo.buscarEquipo(id);
@@ -56,16 +61,20 @@ public class controlador {
         vista.mostrarEquipo(equipo, capacidades);
     }
     
+    // Busca equipos por nombre o parte del nombre
     private void buscarPorNombre() {
         String nombre = vista.leerNombre();
         List<Equipos> equipos = modelo.buscarEquipo(nombre);
         vista.mostrarListaEquipos(equipos);
     }
     
+    // Ordena y muestra equipos por consumo electrico
     private void ordenarPorConsumo() {
         List<Equipos> equiposOrdenados = modelo.ordenarPorConsumo();
         vista.mostrarListaEquipos(equiposOrdenados);
     }
+    
+    // Gestiona el proceso de añadir un nuevo equipo al sistema
     private void añadirNuevoEquipo() {
         try {
             vista.mostrarMensaje("\n=== AÑADIR NUEVO EQUIPO ===");
@@ -76,6 +85,7 @@ public class controlador {
             String nombre = vista.leerNuevoNombre();
             int consumo = vista.leerNuevoConsumo();
             
+            // Verifica que el ID no exista previamente
             if (modelo.existeID(id)) {
                 vista.mostrarError("El ID " + id + " ya existe. Use otro ID.");
                 return;
@@ -83,6 +93,7 @@ public class controlador {
             
             Equipos nuevoEquipo = null;
             
+            // Crea el equipo segun el tipo seleccionado
             switch (tipo) {
                 case 1: 
                     String accion = vista.leerAccionDron();
@@ -104,6 +115,7 @@ public class controlador {
                     return;
             }
             
+            // Agrega el nuevo equipo al modelo
             modelo.agregarEquipo(nuevoEquipo);
             vista.mostrarMensaje("Equipo añadido exitosamente!");
             vista.mostrarMensaje("Nuevo equipo: " + nuevoEquipo.getInfo());
